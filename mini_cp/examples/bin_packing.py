@@ -40,8 +40,8 @@ def bin_packing() -> "None":
             # dynamic symmetry breaking: branch on at most one empty bin
             for j in range(0, min(max_used_bin + 1, n_bins - 1) + 1):
                 if x[item].contains(j):
-                    bin = j
-                    branches.append(lambda: cp.post(factory.equal(x[item], bin)))
+                    # Forcing early binding https://stackoverflow.com/a/3431699
+                    branches.append(lambda j=j: cp.post(factory.equal(x[item], j)))
             return branches
 
     def solution_callback() -> "None":
